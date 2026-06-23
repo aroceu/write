@@ -1226,7 +1226,13 @@ function toggleCommonWords(el) {
     excludeCommon = el.checked;
 updateAnalytics();
 }
+
+	console.log(e.clipboardData.getData('text/html'));
+	setTimeout(() => {
+    console.log(quill.getContents());
+}, 0);
 </script>
+	
 
 </body>
 </html>
