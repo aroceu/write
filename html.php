@@ -31,6 +31,8 @@ if (isset($_POST['action'])) {
 }
 ?>
 
+<!DOCTYPE html>
+
 <html lang="en">
     
     <head>
@@ -314,19 +316,116 @@ function cleanPastedHtml(html) {
         .replace(/\n{3,}/g, '\n\n');
 }
 
+function cleanGoogleDocsHtml(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    // remove junk
+    doc.querySelectorAll('meta, link, style').forEach(el => el.remove());
+    // remove Google Docs classes/styles
+    doc.querySelectorAll('*').forEach(el => {
+        el.removeAttribute('id');
+        if (el.hasAttribute('style')) {
+            const style = el.getAttribute('style');
+            // preserve only underline
+            if (/text-decoration:\s*underline/i.test(style)) {
+                el.style.textDecoration = 'underline';
+            } else {
+                el.removeAttribute('style');
+            }
+        }
+        el.removeAttribute('class');
+    });
+    //
+    // Fix "everything is bold"
+    //
+    // Google Docs frequently generates:
+    //
+    // <p><b>Entire paragraph...</b></p>
+    //
+    // even though visually it isn't bold.
+    //
+    doc.querySelectorAll('p,b,strong').forEach(node => {
+        const parent = node.parentElement;
+        if (
+            (node.tagName === 'B' || node.tagName === 'STRONG') &&
+            parent &&
+            /^P|DIV|LI$/i.test(parent.tagName)
+        ) {
+            const onlyChild =
+                parent.children.length === 1 &&
+                parent.textContent.trim() === node.textContent.trim();
+            if (onlyChild) {
+                // unwrap fake paragraph-wide bold
+                while (node.firstChild) {
+                    parent.insertBefore(node.firstChild, node);
+                }
+                node.remove();
+            }
+        }
+    });
+
+
+quill.root.addEventListener('paste', e => {
 quill.root.addEventListener('paste', e => {
     e.preventDefault();
-
+    e.preventDefault();
     const html =
+    let html = e.clipboardData.getData('text/html');
         e.clipboardData.getData('text/html') ||
+    const text = e.clipboardData.getData('text/plain');
         e.clipboardData.getData('text/plain');
-
+    if (!html) {
     const cleaned = cleanPastedHtml(html);
-
+        quill.insertText(
+            quill.getSelection()?.index || 0,
+            text,
+            Quill.sources.USER
+        );
+        return;
+    }
+    html = cleanGoogleDocsHtml(html);
     const delta = quill.clipboard.convert(cleaned);
-
+    const delta = quill.clipboard.convert(html);
+    const range = quill.getSelection(true);
+    quill.updateContents(
     quill.updateContents(delta, Quill.sources.USER);
+        new Delta()
+            .retain(range.index)
+            .delete(range.length)
+            .concat(delta),
+        Quill.sources.USER
+    );
+    quill.setSelection(
+        range.index + delta.length(),
+        0,
+        Quill.sources.SILENT
+    );
 });
+});
+    //
+    // Preserve spaces around inline formatting
+    //
+    doc.querySelectorAll('i,em,b,strong,u').forEach(el => {
+        const prev = el.previousSibling;
+        const next = el.nextSibling;
+        if (
+            prev &&
+            prev.nodeType === Node.TEXT_NODE &&
+            !prev.textContent.endsWith(' ')
+        ) {
+            prev.textContent += ' ';
+        }
+        if (
+            next &&
+            next.nodeType === Node.TEXT_NODE &&
+            !next.textContent.startsWith(' ')
+        ) {
+            next.textContent = ' ' + next.textContent;
+        }
+    });
+    return doc.body.innerHTML;
+}
+
 
 function normalizeEditorWhitespace() {
     const walker = document.createTreeWalker(
@@ -619,10 +718,10 @@ function updateWordCount() {
     const text = quill.getText();
     const words = getWords(text);
     const paragraphs = getParagraphsFromQuill();
-
+	  const chars = Math.max(0, text.length - 1);
+=
     document.getElementById('wordCount').textContent =
-    `${words.length.toLocaleString()} words • ${text.length.toLocaleString()} chars • ${paragraphs.length.toLocaleString()} paragraphs`;
-}
+`${words.length.toLocaleString()} words • ${chars.toLocaleString()} chars • ${paragraphs.length.toLocaleString()} paragraphs`
 updateWordCount();
 
 function scrollToTop(id) {
@@ -929,7 +1028,7 @@ if (ngramMode === 4) ngramData = getNGrams(text, 4, excludeCommon);
 
 <h4>Overview</h4>
 Words: <span class="stat-number">${stats.words}</span><br>
-Characters: <span class="stat-number">${stats.chars}</span><br>
+Characters: <span class="stat-number">${Math.max(0, (stats.chars || 0) - 1)}</span><br>
 Paragraphs: <span class="stat-number">${stats.paragraphs}</span><br><br>
 
 Unique Words: <span class="stat-number">${stats.uniqueWords}</span><br>
@@ -1045,7 +1144,7 @@ function setNgramMode(mode) {
 
 function getTextStats(text) {
 
-    const cleanText = (text || '').trim();
+    const cleanText = text || '';
     if (!cleanText) return null;
 
     const words = getWords(cleanText);
@@ -1125,7 +1224,10 @@ const medianParagraphWords =
     return {
     words: words.length,
     uniqueWords: uniqueWords.length,
+    chars: Number.isFinite(cleanText?.length)
+    ? cleanText.length
     chars: cleanText.length + 1,
+    : 0,
     paragraphs: paragraphs.length,
 
     avgSentenceLength: avgSentenceLength.toFixed(1),
