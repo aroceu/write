@@ -593,10 +593,12 @@ md.addEventListener('input', async () => {
 
     isUpdating = true;
 
+    const html = normalizeIncomingHTML(res.result || '');
+
     quill.setContents(
-    JSON.parse(localStorage.getItem('doc')),
-    Quill.sources.SILENT
-);
+        quill.clipboard.convert(html),
+        Quill.sources.SILENT
+    );
 
     isUpdating = false;
 
