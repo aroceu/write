@@ -500,8 +500,8 @@ ocean: {
     "--text-color":"#f7f4e8",
     "--surface-color":"#102f40",
     "--textarea-background":"#fffdf5",
-    "--accent-color":"#1b9aaa",
-    "--border-color":"#1b9aaa",
+    "--accent-color":"#4dc2d1",
+    "--border-color":"#4dc2d1",
     "--button-text":"#ffffff",
     "--break-color":"#2e6f95"
 },
