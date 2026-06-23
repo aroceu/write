@@ -167,9 +167,9 @@
             <li><a href="pomodoro.php"> Pomodoro Writing &nbsp;&nbsp; ▶</a>
         <br /><em>Write in Markdown, HTML, mixed Markdown/HTML, or Rich Text in 25-minute intervals with 5 minute breaks. Features a reward system for every 100/1k words.</em></li>
             <li><a href="markdown.php"> Markdown to/from Rich Text (with analytics) &nbsp;&nbsp; ▶</a>
-        <br /><em>Converts from Markdown. Can clean line spacing from Rich Text to Markdown (paste again to convert to cleaned Rich Text), maintaining one line between paragraphs while keeping formatting.</em></li>
+        <br /><em>Converts to/from Rich Text (including Google Docs) to Markdown. Can clean line spacing from Rich Text to Markdown (paste again to convert to cleaned Rich Text), maintaining one line between paragraphs while keeping formatting.</em></li>
             <li><a href="html.php"> HTML to/from Rich Text (with analytics) &nbsp;&nbsp; ▶</a>
-        <br /><em>Converts from Rich Text (including Google Docs) to cleaned raw HTML for AO3 and webpages.</em></li>
+        <br /><em>Converts to/from Rich Text (including Google Docs) to raw HTML. Code is optimally cleaned for AO3 and static webpages.</em></li>
             <li><a href="https://youshouldbewrit.ing"> You Should Be Writing &nbsp;&nbsp; ▶</a>
         <br /><em>But you can visit this webpage instead.</em></li>
         </ul>
