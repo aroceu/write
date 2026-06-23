@@ -23,19 +23,24 @@ if (isset($_POST['action'])) {
     header('Content-Type: application/json');
     $data = $_POST['data'] ?? '';
 
-    if ($_POST['action'] === 'html_to_md') {
+if ($_POST['action'] === 'html_to_md') {
 
-        $clean = clean_html($data);
+    $clean = clean_html($data);
 
-        echo json_encode([
-            'result' => trim($htmlToMd->convert($clean))
-        ]);
-        exit;
-    }
+    // FORCE <br> → newline BEFORE conversion
+    $clean = preg_replace('/<br\s*\/?>/i', "\n", $clean);
+
+    echo json_encode([
+        'result' => trim($htmlToMd->convert($clean))
+    ]);
+    exit;
+}
 
 if ($_POST['action'] === 'md_to_html') {
 
     $html = $mdConverter->convert($data);
+
+    $html = str_replace("\n", "<br>", $html);
 
     echo json_encode([
         'result' => (string)$html
@@ -517,6 +522,15 @@ function getWords(text) {
         .match(/\b[\w']+\b/g) || [];
 }
 
+function preserveLineBreaks(html) {
+    return html
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<\/p>\s*<p>/gi, '\n\n')
+        .replace(/<p>/gi, '')
+        .replace(/<\/p>/gi, '\n')
+        .replace(/\n{3,}/g, '\n\n');
+}
+
 /**
  * =========================
  * QUILL → MARKDOWN
@@ -528,7 +542,7 @@ quill.root.addEventListener('paste', () => {
     // let Quill finish processing the rich HTML
     setTimeout(() => {
 
-        const html = quill.root.innerHTML;
+        const html = preserveLineBreaks(quill.root.innerHTML);
 
         post('html_to_md', html).then(res => {
             md.value = res.result;
@@ -585,7 +599,7 @@ function loadFromCache() {
 
 requestAnimationFrame(async () => {
 
-    const html = quill.root.innerHTML;
+    const html = preserveLineBreaks(quill.root.innerHTML);
 
     const res = await post('html_to_md', html);
 
@@ -617,7 +631,7 @@ document.title = `${docTitle} • WRITE (aroceu)` || 'Untitled • WRITE (aroceu
 function syncToMarkdown() {
     if (isUpdating) return;
 
-    const html = quill.root.innerHTML;
+    const html = preserveLineBreaks(quill.root.innerHTML);
     const myReq = ++requestId;
 
     post('html_to_md', html).then(res => {
@@ -641,7 +655,8 @@ function normalizeIncomingHTML(html) {
     if (!html) return '';
 
     return html
-        // Google Docs / Word junk
+        .replace(/<br\s*\/?>/gi, '<p><br></p>') // IMPORTANT
+        .replace(/\n/g, '<p><br></p>')    
         .replace(/<meta[^>]*>/gi, '')
         .replace(/<link[^>]*>/gi, '')
         .replace(/\u200B/g, '') // zero-width space
@@ -857,7 +872,7 @@ function splitSentences(text) {
  * FIXED: robust paragraph detection (Quill + Google Docs safe)
  */
 function getParagraphsFromQuill() {
-    const html = quill.root.innerHTML;
+    const html = preserveLineBreaks(quill.root.innerHTML);
 
     if (!html || html === '<p><br></p>') return [];
 
@@ -1287,7 +1302,7 @@ shortestParagraphSentenceValue: paragraphSentenceGroups.minValue || 0,
 }
 
 function updateDerivedOutputs() {
-    const html = quill.root.innerHTML;
+    const html = preserveLineBreaks(quill.root.innerHTML);
     const cleanHtml = normalizeIncomingHTML(html);
 
     post('html_to_md', cleanHtml).then(res => {
