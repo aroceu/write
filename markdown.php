@@ -754,7 +754,7 @@ function updateWordCount() {
     const paragraphs = getParagraphsFromQuill();
 
     document.getElementById('wordCount').textContent =
-    `${words.length.toLocaleString()} words • ${text.length.toLocaleString()} chars • ${paragraphs.length.toLocaleString()} paragraphs`;
+    `${words.length.toLocaleString()} words • ${text.length.toLocaleString()-1} chars • ${paragraphs.length.toLocaleString()} paragraphs`;
 }
 updateWordCount();
 
@@ -1062,7 +1062,7 @@ if (ngramMode === 4) ngramData = getNGrams(text, 4, excludeCommon);
 
 <h4>Overview</h4>
 Words: <span class="stat-number">${stats.words}</span><br>
-Characters: <span class="stat-number">${stats.chars}</span><br>
+Characters: <span class="stat-number">${stats.chars - 1}</span><br>
 Paragraphs: <span class="stat-number">${stats.paragraphs}</span><br><br>
 
 Unique Words: <span class="stat-number">${stats.uniqueWords}</span><br>
