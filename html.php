@@ -31,11 +31,21 @@ if (isset($_POST['action'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Quill ⇄ Markdown</title>
+<html lang="en">
+    
+    <head>
+        
+        <title>WRITE &bull; aroceu.com</title>
+        
+	<meta name="robots" content="noai, noimageai">
+	<meta charset="UTF-8">
+	<meta name="description" content="an html to/from rich text converter featuring writing analytics. saves to your browser's cache."/>
+	<meta property="og:title" content="aroceu" />
+	<meta property="og:description" content="an html to/from rich text converter featuring writing analytics. saves to your browser's cache." />
+	<meta property="og:image" content="assets/preview.png" />
+	<meta property="og:url" content="https://write.aroceu.com/" />
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=5, width=device-width">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/fav.ico" />
 
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 
@@ -418,8 +428,12 @@ function loadFromCache() {
         titleInput.value = savedTitle;
     }
 
+    document.title = `${docTitle} • WRITE (aroceu)` || 'Untitled • WRITE (aroceu)';
+
     titleInput.addEventListener('input', (e) => {
         docTitle = e.target.value || 'Untitled';
+
+         document.title = `${docTitle} • WRITE (aroceu)` || 'Untitled • WRITE (aroceu)';
 
         localStorage.setItem('doc2_title', docTitle);
     });
@@ -465,7 +479,7 @@ const titleInput = document.getElementById('doc2Title');
 
 titleInput.addEventListener('input', () => {
     docTitle = titleInput.value || 'Untitled';
-
+document.title = `${docTitle} • WRITE (aroceu)` || 'Untitled • WRITE (aroceu)';
     localStorage.setItem('doc2_title', docTitle);
 });
 
