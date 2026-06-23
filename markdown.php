@@ -23,21 +23,19 @@ if (isset($_POST['action'])) {
     header('Content-Type: application/json');
     $data = $_POST['data'] ?? '';
 
-if ($_POST['action'] === 'html_to_md') {
+    if ($_POST['action'] === 'html_to_md') {
 
-    $clean = clean_html($data);
+        $clean = clean_html($data);
 
-    echo json_encode([
-        'result' => trim($htmlToMd->convert($clean))
-    ]);
-    exit;
-}
+        echo json_encode([
+            'result' => trim($htmlToMd->convert($clean))
+        ]);
+        exit;
+    }
 
 if ($_POST['action'] === 'md_to_html') {
 
     $html = $mdConverter->convert($data);
-	$html = preg_replace('/\r\n?/', "\n", $html);
-$html = preg_replace('/\n{2,}/', '</p><p>', $html);
 
     echo json_encode([
         'result' => (string)$html
@@ -317,14 +315,6 @@ const quill = new Quill('#editor', {
     }
 });
 
-	const Block = Quill.import('blots/block');
-
-class LineBreakBlot extends Block {}
-LineBreakBlot.blotName = 'break';
-LineBreakBlot.tagName = 'BR';
-
-Quill.register(LineBreakBlot);
-
 function cleanPastedHtml(html) {
     return html
         // normalize nbsp
@@ -485,11 +475,6 @@ function normalizeEditorWhitespace() {
     }
 }
 
-quill.clipboard.addMatcher('BR', () => {
-    const Delta = Quill.import('delta');
-    return new Delta().insert('\n');
-});
-
 quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
     if (node.tagName === 'DIV') {
         node = document.createElement('p');
@@ -532,15 +517,6 @@ function getWords(text) {
         .match(/\b[\w']+\b/g) || [];
 }
 
-function preserveLineBreaks(html) {
-    return html
-        .replace(/<br\s*\/?>/gi, '\n')
-        .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n')
-        .replace(/<\/?p[^>]*>/gi, '')
-        .replace(/<\/?div[^>]*>/gi, '\n')
-        .replace(/<[^>]+>/g, '');
-}
-
 /**
  * =========================
  * QUILL → MARKDOWN
@@ -552,7 +528,7 @@ quill.root.addEventListener('paste', () => {
     // let Quill finish processing the rich HTML
     setTimeout(() => {
 
-        const html = preserveLineBreaks(quill.root.innerHTML);
+        const html = quill.root.innerHTML;
 
         post('html_to_md', html).then(res => {
             md.value = res.result;
@@ -609,7 +585,7 @@ function loadFromCache() {
 
 requestAnimationFrame(async () => {
 
-    const html = preserveLineBreaks(quill.root.innerHTML);
+    const html = quill.root.innerHTML;
 
     const res = await post('html_to_md', html);
 
@@ -642,10 +618,9 @@ function syncToMarkdown() {
     if (isUpdating) return;
 
     const html = quill.root.innerHTML;
-	const cleaned = html.replace(/<br\s*\/?>/gi, '\n');
     const myReq = ++requestId;
 
-    post('html_to_md', cleaned).then(res => {
+    post('html_to_md', html).then(res => {
         if (myReq !== requestId) return;
 
         isUpdating = true;
@@ -666,6 +641,7 @@ function normalizeIncomingHTML(html) {
     if (!html) return '';
 
     return html
+        // Google Docs / Word junk
         .replace(/<meta[^>]*>/gi, '')
         .replace(/<link[^>]*>/gi, '')
         .replace(/\u200B/g, '') // zero-width space
@@ -683,9 +659,7 @@ function normalizeIncomingHTML(html) {
 
         // cleanup empty paragraphs
         .replace(/<p>\s*<\/p>/gi, '')
-        .replace(/<p>\s*(<br\s*\/?>)?\s*<\/p>/gi, '<p><br></p>')
-		.replace(/\n/g, '<br>');
-	
+        .replace(/<p>\s*(<br\s*\/?>)?\s*<\/p>/gi, '<p><br></p>');
 }
 
 md.addEventListener('input', async () => {
@@ -883,7 +857,7 @@ function splitSentences(text) {
  * FIXED: robust paragraph detection (Quill + Google Docs safe)
  */
 function getParagraphsFromQuill() {
-    const html = preserveLineBreaks(quill.root.innerHTML);
+    const html = quill.root.innerHTML;
 
     if (!html || html === '<p><br></p>') return [];
 
@@ -1313,7 +1287,7 @@ shortestParagraphSentenceValue: paragraphSentenceGroups.minValue || 0,
 }
 
 function updateDerivedOutputs() {
-    const html = preserveLineBreaks(quill.root.innerHTML);
+    const html = quill.root.innerHTML;
     const cleanHtml = normalizeIncomingHTML(html);
 
     post('html_to_md', cleanHtml).then(res => {
