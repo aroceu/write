@@ -503,7 +503,7 @@ ocean: {
     "--accent-color":"#4dc2d1",
     "--border-color":"#4dc2d1",
     "--button-text":"#ffffff",
-    "--break-color":"#2e6f95"
+    "--break-color":"#eddba8"
 },
 
 neonred: {
