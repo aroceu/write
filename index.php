@@ -3,7 +3,7 @@
     
     <head>
         
-        <title>WRITE &bull; aroceu.com</title>
+        <title>WRITE! &bull; aroceu</title>
         
 	<meta name="robots" content="noai, noimageai">
 	<meta charset="UTF-8">
