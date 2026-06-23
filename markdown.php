@@ -595,10 +595,32 @@ md.addEventListener('input', async () => {
 
 const html = normalizeIncomingHTML(res.result || '');
 
-quill.setContents(
-    quill.clipboard.convert(html),
-    Quill.sources.SILENT
-);
+let delta = quill.clipboard.convert(html);
+
+    // collapse repeated empty lines
+    const cleaned = {
+        ops: delta.ops.reduce((acc, op, i, arr) => {
+            const prev = acc[acc.length - 1];
+
+            const isEmpty =
+                typeof op.insert === 'string' &&
+                op.insert === '\n';
+
+            if (
+                isEmpty &&
+                prev &&
+                typeof prev.insert === 'string' &&
+                prev.insert === '\n'
+            ) {
+                return acc; // skip duplicate empty line
+            }
+
+            acc.push(op);
+            return acc;
+        }, [])
+    };
+
+    quill.setContents(cleaned, Quill.sources.SILENT);
 
     isUpdating = false;
 
