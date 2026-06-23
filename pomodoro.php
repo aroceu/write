@@ -3,7 +3,7 @@
     
     <head>
         
-        <title>WRITE &bull; aroceu.com</title>
+        <title>WRITE! &bull; aroceu</title>
         
 	<meta name="robots" content="noai, noimageai">
 	<meta charset="UTF-8">
@@ -623,7 +623,7 @@ function updatePageTitle() {
             .trim() || "Untitled";
 
     document.title =
-        `${title} • WRITE (aroceu)`;
+        `${title} • WRITE! (aroceu)`;
 }
 
 // run once on page load
@@ -639,7 +639,7 @@ function updatePomodoroClock(){
     let endMinute;
 
     if(minute < 25){
-        phase = "WRITE";
+        phase = "WRITE!";
         endMinute = 25;
     }
     else if(minute < 30){
@@ -647,7 +647,7 @@ function updatePomodoroClock(){
         endMinute = 30;
     }
     else if(minute < 55){
-        phase = "WRITE";
+        phase = "WRITE!";
         endMinute = 55;
     }
     else{
@@ -711,7 +711,7 @@ if (savedTitle) {
 }
 
 document.title =
-    `${titleEl.textContent.trim() || "Untitled"} • WRITE (aroceu)`;
+    `${titleEl.textContent.trim() || "Untitled"} • WRITE! (aroceu)`;
 
     // SAVE on input
 titleEl.addEventListener("input", () => {
