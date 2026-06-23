@@ -1210,10 +1210,6 @@ function updateDerivedOutputs() {
         if (!isUpdating) md.value = res.result;
     });
 
-    if (!isUpdating) {
-        preview.value = cleanHtml;
-    }
-
     updateWordCount();
     updateAnalytics();
         localStorage.setItem('doc', JSON.stringify(quill.getContents()));
