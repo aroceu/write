@@ -308,6 +308,15 @@ quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
         node.removeAttribute('style');
         node.removeAttribute('class');
 }
+	if (node.tagName === 'DIV') {
+        node = document.createElement('p');
+    }
+
+    if (node.nodeType === 1) {
+        node.removeAttribute?.('style');
+        node.removeAttribute?.('class');
+    }
+});
 
 return delta;
 
@@ -398,19 +407,6 @@ function normalizeEditorWhitespace() {
         );
     }
 }
-
-quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-    if (node.tagName === 'DIV') {
-        node = document.createElement('p');
-    }
-
-    if (node.nodeType === 1) {
-        node.removeAttribute?.('style');
-        node.removeAttribute?.('class');
-    }
-
-    return delta;
-});
 
 setTimeout(normalizeEditorWhitespace, 0);
 
