@@ -36,8 +36,8 @@ if ($_POST['action'] === 'html_to_md') {
 if ($_POST['action'] === 'md_to_html') {
 
     $html = $mdConverter->convert($data);
-
-    $html = str_replace("\n", "<br>", $html);
+	$html = preg_replace('/\r\n?/', "\n", $html);
+$html = preg_replace('/\n{2,}/', '</p><p>', $html);
 
     echo json_encode([
         'result' => (string)$html
@@ -521,7 +521,7 @@ function getWords(text) {
 
 function preserveLineBreaks(html) {
     return html
-        .replace(/<br\s*\/?>/gi, '<br>')
+		.replace(/<br\s*\/?>/gi, '\n')
         .replace(/<\/p>\s*<p[^>]*>/gi, '</p><p>')
         .replace(/<p[^>]*>/gi, '<p>')
         .replace(/<\/p>/gi, '</p>');
@@ -627,10 +627,11 @@ document.title = `${docTitle} • WRITE (aroceu)` || 'Untitled • WRITE (aroceu
 function syncToMarkdown() {
     if (isUpdating) return;
 
-    const html = preserveLineBreaks(quill.root.innerHTML);
+    const html = quill.root.innerHTML;
+	const cleaned = html.replace(/<br\s*\/?>/gi, '\n');
     const myReq = ++requestId;
 
-    post('html_to_md', html).then(res => {
+    post('html_to_md', cleaned).then(res => {
         if (myReq !== requestId) return;
 
         isUpdating = true;
@@ -651,8 +652,6 @@ function normalizeIncomingHTML(html) {
     if (!html) return '';
 
     return html
-.replace(/\n{2,}/g, '</p><p>')
-.replace(/\n/g, '<br>') 
         .replace(/<meta[^>]*>/gi, '')
         .replace(/<link[^>]*>/gi, '')
         .replace(/\u200B/g, '') // zero-width space
