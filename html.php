@@ -35,7 +35,7 @@ if (isset($_POST['action'])) {
     
     <head>
         
-        <title>WRITE &bull; aroceu.com</title>
+        <title>WRITE! &bull; aroceu.com</title>
         
 	<meta name="robots" content="noai, noimageai">
 	<meta charset="UTF-8">
@@ -428,12 +428,12 @@ function loadFromCache() {
         titleInput.value = savedTitle;
     }
 
-    document.title = `${docTitle} • WRITE (aroceu)` || 'Untitled • WRITE (aroceu)';
+    document.title = `${docTitle} • WRITE! (aroceu)` || 'Untitled • WRITE! (aroceu)';
 
     titleInput.addEventListener('input', (e) => {
         docTitle = e.target.value || 'Untitled';
 
-         document.title = `${docTitle} • WRITE (aroceu)` || 'Untitled • WRITE (aroceu)';
+         document.title = `${docTitle} • WRITE! (aroceu)` || 'Untitled • WRITE! (aroceu)';
 
         localStorage.setItem('doc2_title', docTitle);
     });
@@ -479,7 +479,7 @@ const titleInput = document.getElementById('doc2Title');
 
 titleInput.addEventListener('input', () => {
     docTitle = titleInput.value || 'Untitled';
-document.title = `${docTitle} • WRITE (aroceu)` || 'Untitled • WRITE (aroceu)';
+document.title = `${docTitle} • WRITE! (aroceu)` || 'Untitled • WRITE! (aroceu)';
     localStorage.setItem('doc2_title', docTitle);
 });
 
