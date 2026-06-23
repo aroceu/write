@@ -31,6 +31,7 @@ if (isset($_POST['action'])) {
 }
 ?>
 
+		
 <!DOCTYPE html>
 
 <html lang="en">
@@ -301,24 +302,18 @@ const quill = new Quill('#editor', {
     }
 });
 
-function cleanPastedHtml(html) {
-    return html
-        // normalize nbsp
-        .replace(/\u00A0/g, ' ')
-
-        // collapse runs of spaces/tabs
-        .replace(/[ \t]{2,}/g, ' ')
-
-        // remove spaces between tags
-        .replace(/>\s+</g, '><')
-
-        // limit blank lines
-        .replace(/\n{3,}/g, '\n\n');
+quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+    // strip junk attributes early
+    if (node.nodeType === 1) {
+        node.removeAttribute('style');
+        node.removeAttribute('class');
 }
+
+return delta;
 
 function cleanGoogleDocsHtml(html) {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
+const doc = parser.parseFromString(html, 'text/html');
     // remove junk
     doc.querySelectorAll('meta, link, style').forEach(el => el.remove());
     // remove Google Docs classes/styles
@@ -363,45 +358,6 @@ function cleanGoogleDocsHtml(html) {
             }
         }
     });
-
-
-quill.root.addEventListener('paste', e => {
-quill.root.addEventListener('paste', e => {
-    e.preventDefault();
-    e.preventDefault();
-    const html =
-    let html = e.clipboardData.getData('text/html');
-        e.clipboardData.getData('text/html') ||
-    const text = e.clipboardData.getData('text/plain');
-        e.clipboardData.getData('text/plain');
-    if (!html) {
-    const cleaned = cleanPastedHtml(html);
-        quill.insertText(
-            quill.getSelection()?.index || 0,
-            text,
-            Quill.sources.USER
-        );
-        return;
-    }
-    html = cleanGoogleDocsHtml(html);
-    const delta = quill.clipboard.convert(cleaned);
-    const delta = quill.clipboard.convert(html);
-    const range = quill.getSelection(true);
-    quill.updateContents(
-    quill.updateContents(delta, Quill.sources.USER);
-        new Delta()
-            .retain(range.index)
-            .delete(range.length)
-            .concat(delta),
-        Quill.sources.USER
-    );
-    quill.setSelection(
-        range.index + delta.length(),
-        0,
-        Quill.sources.SILENT
-    );
-});
-});
     //
     // Preserve spaces around inline formatting
     //
@@ -622,12 +578,13 @@ function normalizeIncomingHTML(html) {
         .replace(/<\/?font[^>]*>/gi, '')
 
         // force divs to paragraphs (IMPORTANT FOR GDOCS)
-        .replace(/<div[^>]*>/gi, '<p>')
-        .replace(/<\/div>/gi, '</p>')
+.replace(/<\/div>\s*<div[^>]*>/gi, '\n')
+.replace(/<br\s*\/?>/gi, '\n')
 
         // cleanup empty paragraphs
         .replace(/<p>\s*<\/p>/gi, '')
-        .replace(/<p>\s*(<br\s*\/?>)?\s*<\/p>/gi, '<p><br></p>');
+        .replace(/<p>\s*<p>/g, '<p>')
+        .replace(/<\/p>\s*<\/p>/g, '</p>');
 }
 
 htmlTA.addEventListener('input', async () => {
@@ -718,10 +675,11 @@ function updateWordCount() {
     const text = quill.getText();
     const words = getWords(text);
     const paragraphs = getParagraphsFromQuill();
-	  const chars = Math.max(0, text.length - 1);
-=
+    const chars = Math.max(0, text.length - 1);
+
     document.getElementById('wordCount').textContent =
-`${words.length.toLocaleString()} words • ${chars.toLocaleString()} chars • ${paragraphs.length.toLocaleString()} paragraphs`
+    `${words.length.toLocaleString()} words • ${chars.toLocaleString()} chars • ${paragraphs.length.toLocaleString()} paragraphs`;
+}
 updateWordCount();
 
 function scrollToTop(id) {
@@ -1144,7 +1102,7 @@ function setNgramMode(mode) {
 
 function getTextStats(text) {
 
-    const cleanText = text || '';
+   const cleanText = text || '';
     if (!cleanText) return null;
 
     const words = getWords(cleanText);
@@ -1224,10 +1182,9 @@ const medianParagraphWords =
     return {
     words: words.length,
     uniqueWords: uniqueWords.length,
-    chars: Number.isFinite(cleanText?.length)
-    ? cleanText.length
-    chars: cleanText.length + 1,
-    : 0,
+chars: Number.isFinite(cleanText?.length)
+? cleanText.length
+: 0,
     paragraphs: paragraphs.length,
 
     avgSentenceLength: avgSentenceLength.toFixed(1),
