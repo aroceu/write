@@ -1062,7 +1062,7 @@ if (ngramMode === 4) ngramData = getNGrams(text, 4, excludeCommon);
 
 <h4>Overview</h4>
 Words: <span class="stat-number">${stats.words}</span><br>
-Characters: <span class="stat-number">${stats.chars - 1}</span><br>
+Characters: <span class="stat-number">${stats.chars || 0}</span><br>
 Paragraphs: <span class="stat-number">${stats.paragraphs}</span><br><br>
 
 Unique Words: <span class="stat-number">${stats.uniqueWords}</span><br>
@@ -1258,7 +1258,9 @@ const medianParagraphWords =
     return {
     words: words.length,
     uniqueWords: uniqueWords.length,
-    chars: cleanText.length,
+   chars: Number.isFinite(cleanText?.length)
+    ? cleanText.length
+    : 0,
     paragraphs: paragraphs.length,
 
     avgSentenceLength: avgSentenceLength.toFixed(1),
