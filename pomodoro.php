@@ -1,10 +1,19 @@
-
-
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Pomodoro Writer</title>
+<html lang="en">
+    
+    <head>
+        
+        <title>WRITE &bull; aroceu.com</title>
+        
+	<meta name="robots" content="noai, noimageai">
+	<meta charset="UTF-8">
+	<meta name="description" content="an in-browser text editor featuring a pomodoro timer and a reward system. saves to your browser's cache."/>
+	<meta property="og:title" content="aroceu" />
+	<meta property="og:description" content="an in-browser text editor featuring a pomodoro timer and a reward system. saves to your browser's cache." />
+	<meta property="og:image" content="assets/preview.png" />
+	<meta property="og:url" content="https://write.aroceu.com/" />
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=5, width=device-width">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/fav.ico" />
 
 <style>
 
@@ -430,6 +439,9 @@ position: fixed;
 
 document.addEventListener("DOMContentLoaded", () => {
     document.execCommand("defaultParagraphSeparator", false, "p");
+   document.addEventListener("DOMContentLoaded", () => {
+
+});
     loadTheme();
     loadFontSettings();
 
@@ -603,6 +615,17 @@ function applyNotesState(hidden) {
     }
 }
 
+function updatePageTitle() {
+
+    const title =
+        document.getElementById("projectTitle")
+            .textContent
+            .trim() || "Untitled";
+
+    document.title =
+        `${title} • WRITE (aroceu)`;
+}
+
 // run once on page load
 document.addEventListener("DOMContentLoaded", loadNotesState);
 
@@ -681,16 +704,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const titleEl = document.getElementById("projectTitle");
 
     // LOAD
-    const savedTitle = localStorage.getItem(TITLE_KEY);
-    if (savedTitle) {
-        titleEl.textContent = savedTitle;
-    }
+const savedTitle = localStorage.getItem(TITLE_KEY);
+
+if (savedTitle) {
+    document.getElementById("projectTitle").textContent = savedTitle;
+}
+
+document.title =
+    `${titleEl.textContent.trim() || "Untitled"} • WRITE (aroceu)`;
 
     // SAVE on input
-    titleEl.addEventListener("input", () => {
-        const title = titleEl.textContent.trim();
-        localStorage.setItem(TITLE_KEY, title || "Untitled");
-    });
+titleEl.addEventListener("input", () => {
+
+    const title =
+        titleEl.textContent.trim() || "Untitled";
+
+    localStorage.setItem(TITLE_KEY, title);
+
+    updatePageTitle();
+});
 
     // prevent new lines
     titleEl.addEventListener("keydown", (e) => {
