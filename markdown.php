@@ -433,8 +433,12 @@ function loadFromCache() {
         titleInput.value = savedTitle;
     }
 
+    document.title = `${docTitle} - WRITE &bull; aroceu` || 'Untitled - WRITE &bull; aroceu';
+
     titleInput.addEventListener('input', (e) => {
         docTitle = e.target.value || 'Untitled';
+
+        document.title = `${docTitle} - WRITE &bull; aroceu` || 'Untitled - WRITE &bull; aroceu';;
 
         localStorage.setItem('doc_title', docTitle);
     });
@@ -480,7 +484,7 @@ const titleInput = document.getElementById('docTitle');
 
 titleInput.addEventListener('input', () => {
     docTitle = titleInput.value || 'Untitled';
-
+document.title = `${docTitle} - WRITE &bull; aroceu` || 'Untitled - WRITE &bull; aroceu';;
     localStorage.setItem('doc_title', docTitle);
 });
 
