@@ -8,7 +8,7 @@
 	<meta name="robots" content="noai, noimageai">
 	<meta charset="UTF-8">
 	<meta name="description" content="some writing tools for me. and maybe for you."/>
-	<meta property="og:title" content="aroceu" />
+	<meta property="og:title" content="WRITE! • aroceu" />
 	<meta property="og:description" content="some writing tools for me. and maybe for you." />
 	<meta property="og:image" content="assets/preview.png" />
 	<meta property="og:url" content="https://write.aroceu.com/" />
