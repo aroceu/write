@@ -155,7 +155,7 @@
 
         <p>Rich text converters support Google Docs while keeping spaces around italicized text, and can be accurately pasted into AO3.</p> 
         
-        <p>Horizontal rules are not supported in any text editor.</p>
+        <p>Horizontal rules are not supported in rich text/visual editors, but can still be written as HTML code in plain text with &lt;hr&gt;.</p>
         </details>
 
 
@@ -167,9 +167,9 @@
             <li><a href="pomodoro.php"> Pomodoro Writing &nbsp;&nbsp; ▶</a>
         <br /><em>Write in Markdown, HTML, mixed Markdown/HTML, or Rich Text in 25-minute intervals with 5 minute breaks. Features a reward system for every 100/1k words.</em></li>
             <li><a href="markdown.php"> Markdown to/from Rich Text (with analytics) &nbsp;&nbsp; ▶</a>
-        <br /><em>Converts to/from Rich Text (including Google Docs) to Markdown. Can clean line spacing from Rich Text to Markdown (paste again to convert to cleaned Rich Text), maintaining one line between paragraphs while keeping formatting.</em></li>
+        <br /><em>Converts Rich Text (including Google Docs) to/from Markdown. Clean line spacing by pasting Rich Text, copying converted Markdown, and re-pasting as Markdown. </em></li>
             <li><a href="html.php"> HTML to/from Rich Text (with analytics) &nbsp;&nbsp; ▶</a>
-        <br /><em>Converts to/from Rich Text (including Google Docs) to raw HTML. Code is optimally cleaned for AO3 and static webpages.</em></li>
+        <br /><em>Converts Rich Text (including Google Docs) to/from raw HTML. Preserves extra line spacing. Cleans code for AO3 and static webpages.</em></li>
             <li><a href="https://youshouldbewrit.ing"> You Should Be Writing &nbsp;&nbsp; ▶</a>
         <br /><em>But you can visit this webpage instead.</em></li>
         </ul>
