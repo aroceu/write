@@ -330,19 +330,134 @@ function cleanPastedHtml(html) {
         .replace(/\n{3,}/g, '\n\n');
 }
 
-quill.root.addEventListener('paste', e => {
+function cleanGoogleDocsHtml(html) {
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // remove junk
+    doc.querySelectorAll('meta, link, style').forEach(el => el.remove());
+
+    // remove Google Docs classes/styles
+    doc.querySelectorAll('*').forEach(el => {
+
+        el.removeAttribute('id');
+
+        if (el.hasAttribute('style')) {
+
+            const style = el.getAttribute('style');
+
+            // preserve only underline
+            if (/text-decoration:\s*underline/i.test(style)) {
+                el.style.textDecoration = 'underline';
+            } else {
+                el.removeAttribute('style');
+            }
+        }
+
+        el.removeAttribute('class');
+    });
+
+    //
+    // Fix "everything is bold"
+    //
+    // Google Docs frequently generates:
+    //
+    // <p><b>Entire paragraph...</b></p>
+    //
+    // even though visually it isn't bold.
+    //
+
+    doc.querySelectorAll('p,b,strong').forEach(node => {
+
+        const parent = node.parentElement;
+
+        if (
+            (node.tagName === 'B' || node.tagName === 'STRONG') &&
+            parent &&
+            /^P|DIV|LI$/i.test(parent.tagName)
+        ) {
+
+            const onlyChild =
+                parent.children.length === 1 &&
+                parent.textContent.trim() === node.textContent.trim();
+
+            if (onlyChild) {
+
+                // unwrap fake paragraph-wide bold
+                while (node.firstChild) {
+                    parent.insertBefore(node.firstChild, node);
+                }
+
+                node.remove();
+            }
+        }
+    });
+
+	quill.root.addEventListener('paste', e => {
+
     e.preventDefault();
 
-    const html =
-        e.clipboardData.getData('text/html') ||
-        e.clipboardData.getData('text/plain');
+    let html = e.clipboardData.getData('text/html');
+    const text = e.clipboardData.getData('text/plain');
 
-    const cleaned = cleanPastedHtml(html);
+    if (!html) {
+        quill.insertText(
+            quill.getSelection()?.index || 0,
+            text,
+            Quill.sources.USER
+        );
+        return;
+    }
 
-    const delta = quill.clipboard.convert(cleaned);
+    html = cleanGoogleDocsHtml(html);
 
-    quill.updateContents(delta, Quill.sources.USER);
+    const delta = quill.clipboard.convert(html);
+
+    const range = quill.getSelection(true);
+
+    quill.updateContents(
+        new Delta()
+            .retain(range.index)
+            .delete(range.length)
+            .concat(delta),
+        Quill.sources.USER
+    );
+
+    quill.setSelection(
+        range.index + delta.length(),
+        0,
+        Quill.sources.SILENT
+    );
 });
+
+    //
+    // Preserve spaces around inline formatting
+    //
+    doc.querySelectorAll('i,em,b,strong,u').forEach(el => {
+
+        const prev = el.previousSibling;
+        const next = el.nextSibling;
+
+        if (
+            prev &&
+            prev.nodeType === Node.TEXT_NODE &&
+            !prev.textContent.endsWith(' ')
+        ) {
+            prev.textContent += ' ';
+        }
+
+        if (
+            next &&
+            next.nodeType === Node.TEXT_NODE &&
+            !next.textContent.startsWith(' ')
+        ) {
+            next.textContent = ' ' + next.textContent;
+        }
+    });
+
+    return doc.body.innerHTML;
+}
 
 function normalizeEditorWhitespace() {
     const walker = document.createTreeWalker(
