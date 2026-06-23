@@ -595,7 +595,6 @@ function normalizeIncomingHTML(html) {
         .replace(/<p>\s*<\/p>/gi, '')
 		.replace(/<p>\s*<p>/g, '<p>')
         .replace(/<\/p>\s*<\/p>/g, '</p>')
-        .replace(/(<p><br><\/p>){2,}/g, '<p><br></p>');
 }
 
 md.addEventListener('input', async () => {
