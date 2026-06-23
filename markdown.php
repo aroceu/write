@@ -315,6 +315,45 @@ const quill = new Quill('#editor', {
     }
 });
 
+quill.root.addEventListener('paste', e => {
+
+    e.preventDefault();
+
+    let html = e.clipboardData.getData('text/html');
+    const text = e.clipboardData.getData('text/plain');
+
+    if (!html) {
+        quill.insertText(
+            quill.getSelection()?.index || 0,
+            text,
+            Quill.sources.USER
+        );
+        return;
+    }
+
+    html = cleanGoogleDocsHtml(html);
+
+    const clean = normalizeIncomingHTML(html);
+const delta = quill.clipboard.convert(clean);
+
+    const range = quill.getSelection(true);
+
+    quill.updateContents(
+        new Delta()
+            .retain(range.index)
+            .delete(range.length)
+            .concat(delta),
+        Quill.sources.USER
+    );
+
+    quill.setSelection(
+        range.index + delta.length(),
+        0,
+        Quill.sources.SILENT
+    );
+	setTimeout(dedupeParagraphs, 0);
+});
+
 function cleanPastedHtml(html) {
     return html
         // normalize nbsp
@@ -394,43 +433,6 @@ function cleanGoogleDocsHtml(html) {
         }
     });
 
-	quill.root.addEventListener('paste', e => {
-
-    e.preventDefault();
-
-    let html = e.clipboardData.getData('text/html');
-    const text = e.clipboardData.getData('text/plain');
-
-    if (!html) {
-        quill.insertText(
-            quill.getSelection()?.index || 0,
-            text,
-            Quill.sources.USER
-        );
-        return;
-    }
-
-    html = cleanGoogleDocsHtml(html);
-
-    const delta = quill.clipboard.convert(html);
-
-    const range = quill.getSelection(true);
-
-    quill.updateContents(
-        new Delta()
-            .retain(range.index)
-            .delete(range.length)
-            .concat(delta),
-        Quill.sources.USER
-    );
-
-    quill.setSelection(
-        range.index + delta.length(),
-        0,
-        Quill.sources.SILENT
-    );
-});
-
     //
     // Preserve spaces around inline formatting
     //
@@ -497,6 +499,15 @@ function normalizeWhitespace(text) {
         .replace(/\n{3,}/g, '\n\n');
 }
 
+function dedupeParagraphs() {
+    const editor = quill.root;
+
+    editor.innerHTML = editor.innerHTML
+        .replace(/(<p>\s*<br>\s*<\/p>\s*){2,}/g, '<p><br></p>')
+        .replace(/(<p>)+/g, '<p>')
+        .replace(/(<\/p>)+/g, '</p>');
+}
+
 const md = document.getElementById('md');
 
 /**
@@ -516,31 +527,6 @@ function getWords(text) {
     return (text || '')
         .match(/\b[\w']+\b/g) || [];
 }
-
-/**
- * =========================
- * QUILL → MARKDOWN
- * =========================
- */
-
-quill.root.addEventListener('paste', () => {
-
-    // let Quill finish processing the rich HTML
-    setTimeout(() => {
-
-        const html = quill.root.innerHTML;
-
-        post('html_to_md', html).then(res => {
-            md.value = res.result;
-
-            updateWordCount();
-            updateAnalytics();
-        });
-
-    }, 0);
-
-});
-
 
 /**
  * =========================
@@ -654,8 +640,8 @@ function normalizeIncomingHTML(html) {
         .replace(/<\/?font[^>]*>/gi, '')
 
         // force divs to paragraphs (IMPORTANT FOR GDOCS)
-        .replace(/<div[^>]*>/gi, '<p>')
-        .replace(/<\/div>/gi, '</p>')
+       .replace(/<div[^>]*>/gi, '\n')
+.replace(/<\/div>/gi, '\n')
 
         // cleanup empty paragraphs
         .replace(/<p>\s*<\/p>/gi, '')
@@ -713,8 +699,6 @@ if (toggleBtn) {
         document.getElementById('sidebar').classList.remove('open');
     };
 }
-
-
 
 /**
  * =========================
