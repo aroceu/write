@@ -443,7 +443,7 @@ function normalizeWhitespace(text) {
 }
 
 const md = document.getElementById('md');
-	
+
 /**
  * =========================
  * HELPERS
