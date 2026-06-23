@@ -317,6 +317,14 @@ const quill = new Quill('#editor', {
     }
 });
 
+	const Block = Quill.import('blots/block');
+
+class LineBreakBlot extends Block {}
+LineBreakBlot.blotName = 'break';
+LineBreakBlot.tagName = 'BR';
+
+Quill.register(LineBreakBlot);
+
 function cleanPastedHtml(html) {
     return html
         // normalize nbsp
@@ -477,6 +485,11 @@ function normalizeEditorWhitespace() {
     }
 }
 
+quill.clipboard.addMatcher('BR', () => {
+    const Delta = Quill.import('delta');
+    return new Delta().insert('\n');
+});
+
 quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
     if (node.tagName === 'DIV') {
         node = document.createElement('p');
@@ -521,10 +534,11 @@ function getWords(text) {
 
 function preserveLineBreaks(html) {
     return html
-		.replace(/<br\s*\/?>/gi, '\n')
-        .replace(/<\/p>\s*<p[^>]*>/gi, '</p><p>')
-        .replace(/<p[^>]*>/gi, '<p>')
-        .replace(/<\/p>/gi, '</p>');
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n')
+        .replace(/<\/?p[^>]*>/gi, '')
+        .replace(/<\/?div[^>]*>/gi, '\n')
+        .replace(/<[^>]+>/g, '');
 }
 
 /**
@@ -669,7 +683,9 @@ function normalizeIncomingHTML(html) {
 
         // cleanup empty paragraphs
         .replace(/<p>\s*<\/p>/gi, '')
-        .replace(/<p>\s*(<br\s*\/?>)?\s*<\/p>/gi, '<p><br></p>');
+        .replace(/<p>\s*(<br\s*\/?>)?\s*<\/p>/gi, '<p><br></p>')
+		.replace(/\n/g, '<br>');
+	
 }
 
 md.addEventListener('input', async () => {
