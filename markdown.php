@@ -612,8 +612,8 @@ function normalizeIncomingHTML(html) {
         .replace(/<\/?font[^>]*>/gi, '')
 
         // force divs to paragraphs (IMPORTANT FOR GDOCS)
-       .replace(/<div[^>]*>/gi, '\n')
-.replace(/<\/div>/gi, '\n')
+.replace(/<\/div>\s*<div[^>]*>/gi, '\n')
+.replace(/<br\s*\/?>/gi, '\n')
 
         // cleanup empty paragraphs
         .replace(/<p>\s*<\/p>/gi, '')
@@ -822,8 +822,8 @@ function getParagraphsFromQuill() {
         .replace(/<\/p>/g, '\n')
 
         // GDocs / Word / weird div structures
-        .replace(/<div[^>]*>/gi, '\n')
-        .replace(/<\/div>/gi, '\n')
+.replace(/<\/div>\s*<div[^>]*>/gi, '\n')
+.replace(/<br\s*\/?>/gi, '\n')
 
         // cleanup
         .replace(/<br\s*\/?>/g, '\n')
