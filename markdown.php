@@ -315,43 +315,15 @@ const quill = new Quill('#editor', {
     }
 });
 
-quill.root.addEventListener('paste', e => {
-
-    e.preventDefault();
-
-    let html = e.clipboardData.getData('text/html');
-    const text = e.clipboardData.getData('text/plain');
-
-    if (!html) {
-        quill.insertText(
-            quill.getSelection()?.index || 0,
-            text,
-            Quill.sources.USER
-        );
-        return;
+quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+    if (node.tagName === 'DIV') {
+        node = document.createElement('p');
     }
 
-    html = cleanGoogleDocsHtml(html);
+    node.removeAttribute?.('style');
+    node.removeAttribute?.('class');
 
-    const clean = normalizeIncomingHTML(html);
-const delta = quill.clipboard.convert(clean);
-
-    const range = quill.getSelection(true);
-
-    quill.updateContents(
-        new Delta()
-            .retain(range.index)
-            .delete(range.length)
-            .concat(delta),
-        Quill.sources.USER
-    );
-
-    quill.setSelection(
-        range.index + delta.length(),
-        0,
-        Quill.sources.SILENT
-    );
-	setTimeout(dedupeParagraphs, 0);
+    return delta;
 });
 
 function cleanPastedHtml(html) {
