@@ -27,9 +27,6 @@ if ($_POST['action'] === 'html_to_md') {
 
     $clean = clean_html($data);
 
-    // FORCE <br> → newline BEFORE conversion
-    $clean = preg_replace('/<br\s*\/?>/i', "\n", $clean);
-
     echo json_encode([
         'result' => trim($htmlToMd->convert($clean))
     ]);
@@ -524,11 +521,10 @@ function getWords(text) {
 
 function preserveLineBreaks(html) {
     return html
-        .replace(/<br\s*\/?>/gi, '\n')
-        .replace(/<\/p>\s*<p>/gi, '\n\n')
-        .replace(/<p>/gi, '')
-        .replace(/<\/p>/gi, '\n')
-        .replace(/\n{3,}/g, '\n\n');
+        .replace(/<br\s*\/?>/gi, '<br>')
+        .replace(/<\/p>\s*<p[^>]*>/gi, '</p><p>')
+        .replace(/<p[^>]*>/gi, '<p>')
+        .replace(/<\/p>/gi, '</p>');
 }
 
 /**
@@ -655,8 +651,8 @@ function normalizeIncomingHTML(html) {
     if (!html) return '';
 
     return html
-        .replace(/<br\s*\/?>/gi, '<p><br></p>') // IMPORTANT
-        .replace(/\n/g, '<p><br></p>')    
+.replace(/\n{2,}/g, '</p><p>')
+.replace(/\n/g, '<br>') 
         .replace(/<meta[^>]*>/gi, '')
         .replace(/<link[^>]*>/gi, '')
         .replace(/\u200B/g, '') // zero-width space
