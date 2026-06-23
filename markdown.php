@@ -56,7 +56,7 @@ if ($_POST['action'] === 'md_to_html') {
 	<meta name="robots" content="noai, noimageai">
 	<meta charset="UTF-8">
 	<meta name="description" content="a markdown to/from rich text converter featuring writing analytics. saves to your browser's cache."/>
-	<meta property="og:title" content="aroceu" />
+	<meta property="og:title" content="WRITE! • aroceu" />
 	<meta property="og:description" content="a markdown to/from rich text converter featuring writing analytics. saves to your browser's cache." />
 	<meta property="og:image" content="assets/preview.png" />
 	<meta property="og:url" content="https://write.aroceu.com/" />
