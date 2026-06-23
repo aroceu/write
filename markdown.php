@@ -742,12 +742,6 @@ async function copyEditor() {
     );
 }
 
-async function copyHtml() {
-    await navigator.clipboard.writeText(
-        document.getElementById('preview').textContent
-    );
-}
-
 function updateWordCount() {
     const text = quill.getText();
     const words = getWords(text);
@@ -1344,11 +1338,7 @@ function toggleCommonWords(el) {
     excludeCommon = el.checked;
 updateAnalytics();
 }
-
-	console.log(e.clipboardData.getData('text/html'));
-	setTimeout(() => {
-    console.log(quill.getContents());
-}, 0);
+	
 </script>
 	
 
