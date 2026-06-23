@@ -443,13 +443,7 @@ function normalizeWhitespace(text) {
 }
 
 const md = document.getElementById('md');
-
-function preserveLineBreakHTML(html) {
-    return html
-        .replace(/<p><br><\/p>/g, '\n')   // empty paragraph = newline
-        .replace(/<\/p>\s*<p>/g, '\n')    // paragraph break
-        .replace(/<br\s*\/?>/g, '\n');    // explicit breaks
-}
+	
 /**
  * =========================
  * HELPERS
@@ -543,8 +537,7 @@ document.title = `${docTitle} • WRITE! (aroceu)` || 'Untitled • WRITE! (aroc
 function syncToMarkdown() {
     if (isUpdating) return;
 
-   const rawHtml = quill.root.innerHTML;
-    const html = preserveLineBreakHTML(rawHtml);
+    const html = quill.root.innerHTML;
     const myReq = ++requestId;
 
     post('html_to_md', html).then(res => {
