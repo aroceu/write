@@ -1178,7 +1178,7 @@ function setNgramMode(mode) {
 
 function getTextStats(text) {
 
-    const cleanText = (text || '').trim();
+    const cleanText = text || '';
     if (!cleanText) return null;
 
     const words = getWords(cleanText);
@@ -1258,7 +1258,7 @@ const medianParagraphWords =
     return {
     words: words.length,
     uniqueWords: uniqueWords.length,
-    chars: cleanText.length + 1,
+    chars: cleanText.length,
     paragraphs: paragraphs.length,
 
     avgSentenceLength: avgSentenceLength.toFixed(1),
