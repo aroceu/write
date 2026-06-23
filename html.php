@@ -57,7 +57,7 @@ body { margin:0; font-family:system-ui; }
 .container { display:flex; height:100vh; }
 
 .panel { flex:1; display:flex; flex-direction:column; border-right:1px solid #5C98B2; }
-.title { padding:10px; font-size:16px; font-weight: bold; display:flex; justify-content:space-between; border-bottom: 1px solid #5C98B2; align-items: center; color: #5C98B2; background: #eee;}
+.title { padding:10px 10px 11px; font-size:16px; font-weight: bold; display:flex; justify-content:space-between; border-bottom: 1px solid #5C98B2; align-items: center; color: #5C98B2; background: #eee;}
 .ql-toolbar.ql-snow{
     border-bottom: 1px solid #5C98B2;
     border-top: none;
