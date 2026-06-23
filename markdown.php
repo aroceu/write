@@ -326,21 +326,6 @@ quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
     return delta;
 });
 
-function cleanPastedHtml(html) {
-    return html
-        // normalize nbsp
-        .replace(/\u00A0/g, ' ')
-
-        // collapse runs of spaces/tabs
-        .replace(/[ \t]{2,}/g, ' ')
-
-        // remove spaces between tags
-        .replace(/>\s+</g, '><')
-
-        // limit blank lines
-        .replace(/\n{3,}/g, '\n\n');
-}
-
 function cleanGoogleDocsHtml(html) {
 
     const parser = new DOMParser();
@@ -469,15 +454,6 @@ function normalizeWhitespace(text) {
         .replace(/\u00A0/g, ' ')
         .replace(/[^\S\r\n]+/g, ' ')
         .replace(/\n{3,}/g, '\n\n');
-}
-
-function dedupeParagraphs() {
-    const editor = quill.root;
-
-    editor.innerHTML = editor.innerHTML
-        .replace(/(<p>\s*<br>\s*<\/p>\s*){2,}/g, '<p><br></p>')
-        .replace(/(<p>)+/g, '<p>')
-        .replace(/(<\/p>)+/g, '</p>');
 }
 
 const md = document.getElementById('md');
@@ -617,7 +593,10 @@ function normalizeIncomingHTML(html) {
 
         // cleanup empty paragraphs
         .replace(/<p>\s*<\/p>/gi, '')
-        .replace(/<p>\s*(<br\s*\/?>)?\s*<\/p>/gi, '<p><br></p>');
+        .replace(/<p>\s*(<br\s*\/?>)?\s*<\/p>/gi, '<p><br></p>')
+		.replace(/<p>\s*<p>/g, '<p>')
+        .replace(/<\/p>\s*<\/p>/g, '</p>')
+        .replace(/(<p><br><\/p>){2,}/g, '<p><br></p>');
 }
 
 md.addEventListener('input', async () => {
