@@ -312,11 +312,6 @@ quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
         node = document.createElement('p');
     }
 
-    if (node.nodeType === 1) {
-        node.removeAttribute?.('style');
-        node.removeAttribute?.('class');
-    }
-
 return delta;
 
 	});
@@ -792,8 +787,8 @@ function getParagraphsFromQuill() {
         .replace(/<\/p>/g, '\n')
 
         // GDocs / Word / weird div structures
-        .replace(/<div[^>]*>/gi, '\n')
-        .replace(/<\/div>/gi, '\n')
+        .replace(/<\/div>\s*<div[^>]*>/gi, '\n')
+        .replace(/<br\s*\/?>/gi, '\n')
 
         // cleanup
         .replace(/<br\s*\/?>/g, '\n')
