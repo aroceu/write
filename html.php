@@ -316,9 +316,10 @@ quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
         node.removeAttribute?.('style');
         node.removeAttribute?.('class');
     }
-});
 
 return delta;
+
+	});
 
 function cleanGoogleDocsHtml(html) {
     const parser = new DOMParser();
