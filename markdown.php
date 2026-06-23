@@ -325,17 +325,6 @@ quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
     return delta;
 });
 
-	quill.clipboard.addMatcher('p', (node, delta) => {
-    const text = node.textContent || '';
-
-    // drop empty paragraphs entirely
-    if (!text.trim()) {
-        return new Quill.import('delta')();
-    }
-
-    return delta;
-});
-
 function cleanGoogleDocsHtml(html) {
 
     const parser = new DOMParser();
