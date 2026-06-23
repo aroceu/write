@@ -593,7 +593,6 @@ function normalizeIncomingHTML(html) {
 
         // cleanup empty paragraphs
         .replace(/<p>\s*<\/p>/gi, '')
-        .replace(/<p>\s*(<br\s*\/?>)?\s*<\/p>/gi, '<p><br></p>')
 		.replace(/<p>\s*<p>/g, '<p>')
         .replace(/<\/p>\s*<\/p>/g, '</p>')
         .replace(/(<p><br><\/p>){2,}/g, '<p><br></p>');
