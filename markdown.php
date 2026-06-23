@@ -752,9 +752,10 @@ function updateWordCount() {
     const text = quill.getText();
     const words = getWords(text);
     const paragraphs = getParagraphsFromQuill();
+	const chars = Math.max(0, text.length - 1);
 
     document.getElementById('wordCount').textContent =
-    `${words.length.toLocaleString()} words • ${text.length.toLocaleString()-1} chars • ${paragraphs.length.toLocaleString()} paragraphs`;
+`${words.length.toLocaleString()} words • ${chars.toLocaleString()} chars • ${paragraphs.length.toLocaleString()} paragraphs`
 }
 updateWordCount();
 
