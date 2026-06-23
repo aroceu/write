@@ -316,12 +316,22 @@ const quill = new Quill('#editor', {
 });
 
 quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-    if (node.tagName === 'DIV') {
-        node = document.createElement('p');
+    // strip junk attributes early
+    if (node.nodeType === 1) {
+        node.removeAttribute('style');
+        node.removeAttribute('class');
     }
 
-    node.removeAttribute?.('style');
-    node.removeAttribute?.('class');
+    return delta;
+});
+
+	quill.clipboard.addMatcher('p', (node, delta) => {
+    const text = node.textContent || '';
+
+    // drop empty paragraphs entirely
+    if (!text.trim()) {
+        return new Quill.import('delta')();
+    }
 
     return delta;
 });
@@ -433,19 +443,6 @@ function normalizeEditorWhitespace() {
         );
     }
 }
-
-quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-    if (node.tagName === 'DIV') {
-        node = document.createElement('p');
-    }
-
-    if (node.nodeType === 1) {
-        node.removeAttribute?.('style');
-        node.removeAttribute?.('class');
-    }
-
-    return delta;
-});
 
 setTimeout(normalizeEditorWhitespace, 0);
 
