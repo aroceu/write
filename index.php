@@ -68,7 +68,7 @@
         </navigation>
 
         <footer>
-            2026 &hearts; <a href="https://aroceu.com">aroceu</a> &hearts; <a href="https://donate.kingdra.net">donate</a>
+            2026 &hearts; <a href="https://aroceu.com">aroceu</a> &hearts; <a href="https://github.com/aroceu/write">github</a>
         </footer>
         </main>
     </body>

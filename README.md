@@ -7,7 +7,7 @@ Writing tools made for my personal use case, publicly available for others to us
 Features the following:
 
 ### Pomodoro Writer
-- A writing tool with a 25 minute timer at every half hour (live clock), with a five minute break per session. 
+- A writing tool with a 25 minute timer at every half hour (live clock), with a five minute break between sessions. 
 - Visual and plain text editor, the latter of which supports both Markdown and basic HTML. 
 - Theme, font, and style switchers. 
 - Buttons for basic formatting, Select All, and Copy. 
