@@ -7,28 +7,28 @@ Writing tools made for my personal use case, publicly available for others to us
 Features the following:
 
 ### Pomodoro Writer
-    - A writing tool with a 25 minute timer at every half hour (live clock), with a five minute break per session. 
-    - Visual and plain text editor, the latter of which supports both Markdown and basic HTML. 
-    - Theme, font, and style switchers. 
-    - Buttons for basic formatting, Select All, and Copy. 
-    - Reward system for every 100 and 1000 words. 
-    - Writing can be downloaded as an HTML webpage.
+- A writing tool with a 25 minute timer at every half hour (live clock), with a five minute break per session. 
+- Visual and plain text editor, the latter of which supports both Markdown and basic HTML. 
+- Theme, font, and style switchers. 
+- Buttons for basic formatting, Select All, and Copy. 
+- Reward system for every 100 and 1000 words. 
+- Writing can be downloaded as an HTML webpage.
 
 ### Markdown to/from Rich Text Converter
-    - 2-panel rich text and markdown sync converter.
-    - Rich Text is Google Docs friendly, and preserves spaces around italics. The Rich Text on this page can then be pasted into AO3 with proper formatting. 
-    - Standardizes to one space between paragraphs. Repaste the Markdown to see Rich Text changes. 
-    - Does not support line breaks
-    - Provides analytics for word, character, and paragraph count and uniqueness; lengths of sentences and paragraphs; and frequently used phrases and words. 
-    - Download the Markdown as .txt. 
+- 2-panel rich text and markdown sync converter.
+- Rich Text is Google Docs friendly, and preserves spaces around italics. The Rich Text on this page can then be pasted into AO3 with proper formatting. 
+- Standardizes to one space between paragraphs. Repaste the Markdown to see Rich Text changes. 
+- Does not support line breaks (shift+Enter).
+- Provides analytics for word, character, and paragraph count and uniqueness; lengths of sentences and paragraphs; and frequently used phrases and words. 
+- Download the Markdown as .txt. 
 
 ### HTML to/from Rich Text Converter
-    - 2-panel rich text and HTML sync converter. 
-    - Rich Text is Google Docs friendly, and preserves spaces around italics. The Rich Text on this page can then be pasted into AO3 with proper formatting. 
-    - Preserves additional paragraph breaks. 
-    - Does not support line breaks. 
-    - Provides analytics for word, character, and paragraph count and uniqueness; lengths of sentences and paragraphs; and frequently used phrases and words. 
-    - Download the HTML as .html. 
+- 2-panel rich text and HTML sync converter. 
+- Rich Text is Google Docs friendly, and preserves spaces around italics. The Rich Text on this page can then be pasted into AO3 with proper formatting. 
+- Preserves additional paragraph breaks. 
+- Does not support line breaks (shift+Enter).
+- Provides analytics for word, character, and paragraph count and uniqueness; lengths of sentences and paragraphs; and frequently used phrases and words. 
+- Download the HTML as .html. 
 
 The index page links to [youshouldbewrit.ing](https://youshouldbewrit.ing) as well, but that's a separate project I made to guilt myself when I'm not writing. 
 
