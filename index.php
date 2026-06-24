@@ -13,119 +13,11 @@
 	<meta property="og:image" content="assets/preview.png" />
 	<meta property="og:url" content="https://write.aroceu.com/" />
 	<meta name="viewport" content="initial-scale=1.0, maximum-scale=5, width=device-width">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/fav.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.png" />
 
     <script src="https://kit.fontawesome.com/fbb66f1bce.js" crossorigin="anonymous"></script>
 
-    <style type="text/css">
-
-        * {
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background-color: #fafafa;
-            color: #333333;
-            margin: 0;
-            padding: 20px;
-        }
-
-        main {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 30px;
-            border: 1px solid #bbbbbb;
-            border-radius: 4px;
-        }
-
-        h1 {
-            color: #5C98B2;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        blurb {
-            display: block;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        blurb p {
-            margin: 15px 0;
-            color: #333333;
-        }
-
-        navigation ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        navigation li {
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #ffffff;
-            border-left: 4px solid #5C98B2;
-        }
-
-        navigation a {
-            color: #5C98B2;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        navigation a:hover {
-            text-decoration: underline;
-            font-style: italic;
-        }
-
-        navigation em {
-            display: block;
-            margin-top: 8px;
-            color: #666666;
-            font-style: italic;
-            font-size: 0.95em;
-        }
-
-        .center {
-            text-align: center;
-        }
-
-        summary {
-            cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-align: center;
-            color: #5C98B2;
-        }
-
-        summary > details[open] {
-            margin-top: 10px;
-        }
-
-        details{
-            background-color: #f3f3f3;
-            padding: 15px 15px 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #666666;
-        }
-
-        footer a {
-            color: #5C98B2;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="assets/css/index.css" />
 
     </head>
 
@@ -153,9 +45,9 @@
             word/phrase frequency of two, three, and four sets of words. Word/phrase frequency allows you to exclude or include common words.
         </p>
 
-        <p>Rich text converters support Google Docs while keeping spaces around italicized text, and can be accurately pasted into AO3.</p> 
+        <p>Rich text converters support Google Docs while keeping spaces around italicized text, and can be accurately pasted into AO3. The converters standardize one space between paragraphs, but not single line breaks.</p> 
         
-        <p>Horizontal rules are not supported in rich text/visual editors, but can still be written as HTML code in plain text with &lt;hr&gt;.</p>
+        <p>Horizontal rules are not supported in rich text/visual editors, but can still be written as HTML code in plain text with <code>&lt;hr&gt;</code>.</p>
         </details>
 
 
@@ -164,19 +56,19 @@
         <navigation>
 
         <ul>
-            <li><a href="pomodoro.php"> Pomodoro Writing &nbsp;&nbsp; ▶</a>
-        <br /><em>Write in Markdown, HTML, mixed Markdown/HTML, or Rich Text in 25-minute intervals with 5 minute breaks. Features a reward system for every 100/1k words.</em></li>
-            <li><a href="markdown.php"> Markdown to/from Rich Text (with analytics) &nbsp;&nbsp; ▶</a>
-        <br /><em>Converts Rich Text (including Google Docs) to/from Markdown. Clean line spacing by pasting Rich Text, copying converted Markdown, and re-pasting as Markdown. </em></li>
-            <li><a href="html.php"> HTML to/from Rich Text (with analytics) &nbsp;&nbsp; ▶</a>
-        <br /><em>Converts Rich Text (including Google Docs) to/from raw HTML. Preserves extra line spacing. Cleans code for AO3 and static webpages.</em></li>
-            <li><a href="https://youshouldbewrit.ing"> You Should Be Writing &nbsp;&nbsp; ▶</a>
-        <br /><em>But you can visit this webpage instead.</em></li>
+            <a href="pomodoro.php"><li> <strong>Pomodoro Writing</strong>
+        <desc>Write in Markdown, HTML, mixed Markdown/HTML, or Rich Text in 25-minute intervals with 5 minute breaks. Features a reward system for every 100/1k words.</desc></li></a>
+            <a href="convert/markdown"><li><strong>Markdown to/from Rich Text (with analytics)</strong>
+        <desc>Converts Rich Text (including Google Docs) to/from Markdown. Clean line spacing by pasting Rich Text, copying converted Markdown, and re-pasting as Markdown. </desc></li></a>
+            <a href="convert/html"><li><strong>HTML to/from Rich Text (with analytics)</strong>
+        <desc>Converts Rich Text (including Google Docs) to/from raw HTML. Preserves extra line spacing. Cleans code for AO3 and static webpages.</desc></li></a>
+            <a href="https://youshouldbewrit.ing"><li><strong>You Should Be Writing</strong>
+        <desc>But you can visit this webpage instead.</desc></li></a>
         </ul>
         </navigation>
 
         <footer>
-            2026 &hearts; <a href="https://aroceu.com">aroceu</a>
+            2026 &hearts; <a href="https://aroceu.com">aroceu</a> &hearts; <a href="https://donate.kingdra.net">donate</a>
         </footer>
         </main>
     </body>

@@ -1,0 +1,286 @@
+:root {
+    --accent: #5C98B2;
+    --border: #5C98B2;
+    --bg: #ffffff;
+    --panel-bg: #fafafa;
+    --title-bg: #eee;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+    background: var(--bg);
+}
+
+.container {
+    display: flex;
+    min-height: 100dvh;
+    height: 100dvh;
+    overflow: hidden;
+    flex-direction: row;
+}
+
+.panel {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+}
+
+.panel:last-child {
+    border-right: none;
+}
+
+.title {
+    padding: 10px 10px 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    background: var(--title-bg);
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.panel:nth-child(2) .title {
+    padding-bottom: 9px;
+}
+
+.ql-toolbar.ql-snow {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+}
+
+.ql-container.ql-snow {
+    border: none;
+}
+
+textarea,
+.ql-container {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+}
+
+textarea {
+    padding: 12px;
+    border: 0;
+    resize: none;
+    font-family: monospace;
+}
+
+#editor {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+button {
+    padding: 8px 12px;
+    margin-right: 5px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--accent);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+button#toggleStats {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(360px, 100vw);
+    height: 100dvh;
+    max-width: 100vw;
+    background: var(--panel-bg);
+    border-left: 1px solid var(--border);
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    overflow: auto;
+    padding: 12px;
+    line-height: 1.6;
+    -webkit-overflow-scrolling: touch;
+}
+
+#sidebar.open {
+    transform: translateX(0);
+}
+
+.stat-number,
+.ngram-count {
+    background: #ddd;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.ngrams-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 10pt;
+}
+
+.ngrams-nav button {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.ngrams-nav button:hover {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+h3,
+h4 {
+    color: var(--accent);
+}
+
+.analytics-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+hr {
+    padding-top: 10px;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.footer {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 5px 0 10px;
+}
+
+a:link,
+a:visited {
+    color: var(--accent);
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.ql-editor p {
+    margin: 0;
+}
+
+.ql-editor p + p {
+    margin-top: 1em;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        overflow: auto;
+    }
+
+    .panel {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .panel:last-child {
+        border-bottom: none;
+    }
+
+    .title {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+
+    button {
+        min-height: 40px;
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    button#toggleStats {
+        width: 36px;
+        height: 36px;
+    }
+
+    textarea,
+    .ql-container {
+        font-size: 14px;
+    }
+
+    #sidebar {
+        width: 100vw;
+        max-height: 55dvh;
+        height: auto;
+        top: auto;
+        bottom: 0;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12);
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 13px;
+    }
+
+    .title {
+        font-size: 13px;
+        padding: 6px 8px;
+    }
+
+    button {
+        padding: 7px 9px;
+        font-size: 13px;
+    }
+
+    #sidebar {
+        padding: 10px;
+    }
+
+    textarea,
+    .ql-container {
+        font-size: 13px;
+    }
+}
