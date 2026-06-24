@@ -4,5 +4,13 @@
         "ezyang/htmlpurifier": "^4.19",
         "league/html-to-markdown": "^5.1",
         "league/commonmark": "^2.8"
+    },
+    "require-dev": {
+        "composer-unused/composer-unused-plugin": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer-unused/composer-unused-plugin": true
+        }
     }
 }
