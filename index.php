@@ -5,6 +5,10 @@
         
         <title>WRITE! &bull; aroceu</title>
         
+		<meta name="robots" content="noindex, nofollow" />
+	<meta name="googlebot" content="noindex, nofollow" />
+	<meta name="noai" content="true" />
+	<meta name="noimageai" content="true" />
 	<meta name="robots" content="noai, noimageai">
 	<meta charset="UTF-8">
 	<meta name="description" content="some writing tools for me. and maybe for you."/>

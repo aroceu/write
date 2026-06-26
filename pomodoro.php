@@ -5,6 +5,10 @@
         
         <title>WRITE! &bull; aroceu</title>
         
+		<meta name="robots" content="noindex, nofollow" />
+	<meta name="googlebot" content="noindex, nofollow" />
+	<meta name="noai" content="true" />
+	<meta name="noimageai" content="true" />
 	<meta name="robots" content="noai, noimageai">
 	<meta charset="UTF-8">
 	<meta name="description" content="an in-browser text editor featuring a pomodoro timer and a reward system. saves to your browser's cache."/>

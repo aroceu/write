@@ -10,6 +10,10 @@ include '../assets/php/html.php';
         
         <title>WRITE! &bull; aroceu.com</title>
         
+		<meta name="robots" content="noindex, nofollow" />
+	<meta name="googlebot" content="noindex, nofollow" />
+	<meta name="noai" content="true" />
+	<meta name="noimageai" content="true" />
 	<meta name="robots" content="noai, noimageai">
 	<meta charset="UTF-8">
 	<meta name="description" content="an html to/from rich text converter featuring writing analytics. saves to your browser's cache."/>
