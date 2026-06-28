@@ -195,7 +195,7 @@ function getNGrams(text, n, exclude = true) {
     return Object.entries(counts)
         .filter(x => x[1] > 1)
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 20);
+        .slice(0, 100);
 }
 
 function normalizeItem(item) {
